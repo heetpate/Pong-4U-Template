@@ -1,7 +1,7 @@
 ﻿/*
  * Description:     A basic PONG simulator
- * Author:           
- * Date:            
+ * Author:   Heet Patel            
+ * Date:     04/02/2024       
  */
 
 #region libraries
@@ -27,6 +27,7 @@ namespace Pong
 
         //graphics objects for drawing
         SolidBrush whiteBrush = new SolidBrush(Color.White);
+        SolidBrush blueBrush = new SolidBrush(Color.Blue);
         Font drawFont = new Font("Courier New", 10);
 
         // Sounds for game
@@ -119,6 +120,11 @@ namespace Pong
             }
         }
 
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
         /// <summary>
         /// sets the ball and paddle positions for game start
         /// </summary>
@@ -137,6 +143,7 @@ namespace Pong
             player2 = new Rectangle(this.Width - PADDLE_EDGE - PADDLE_WIDTH, this.Height / 2 - PADDLE_HEIGHT / 2, PADDLE_WIDTH, PADDLE_HEIGHT);
 
             // TODO create a ball rectangle in the middle of screen
+            ball = new Rectangle(this.Width / 2 - BALL_WIDTH /2, this.Height / 2 - BALL_HEIGHT / 2, BALL_WIDTH, BALL_HEIGHT);
 
         }
 
@@ -149,6 +156,11 @@ namespace Pong
             #region update ball position
 
             // TODO create code to move ball either left or right based on ballMoveRight and using BALL_SPEED
+           /* if (BALL_WIDTH  0)
+            {
+                ball.Y = ball.Y + BALL_SPEED;
+
+            }*/
 
             // TODO create code move ball either down or up based on ballMoveDown and using BALL_SPEED
 
@@ -159,13 +171,47 @@ namespace Pong
             if (wKeyDown == true && player1.Y > 0)
             {
                 // TODO create code to move player 1 up
+                player1.Y = player1.Y - PADDLE_SPEED;
             }
 
             // TODO create an if statement and code to move player 1 down 
+            if (sKeyDown == true && player1.Y > 0)
+            {
+                player1.Y = player1.Y + PADDLE_SPEED;
+            }
 
             // TODO create an if statement and code to move player 2 up
+            if (upKeyDown == true && player2.Y > 0)
+            {
+                // TODO create code to move player 1 up
+                player2.Y = player2.Y - PADDLE_SPEED;
+            }
 
             // TODO create an if statement and code to move player 2 down
+            if (downKeyDown == true && player2.Y > 0)
+            {
+                player2.Y = player2.Y + PADDLE_SPEED;
+            }
+
+            if (player1.Y < 0)
+            {
+                player1.Y = player1.Y + PADDLE_SPEED;
+            }
+            if (player2.Y < 0)
+            {
+                player2.Y = player2.Y + PADDLE_SPEED;
+            }
+
+            if (player1.Y > 0 )
+            {
+                player1.Y = player1.Y - PADDLE_SPEED;
+            }
+            if (player2.Y < 0)
+            {
+                player2.Y = player2.Y - PADDLE_SPEED;
+            }
+
+
 
             #endregion
 
@@ -174,7 +220,10 @@ namespace Pong
             if (ball.Y < 0) // if ball hits top line
             {
                 // TODO use ballMoveDown boolean to change direction
+
                 // TODO play a collision sound
+                collisionSound.Play();
+
             }
             // TODO In an else if statement check for collision with bottom line
             // If true use ballMoveDown boolean to change direction
@@ -239,8 +288,10 @@ namespace Pong
         {
             // TODO draw player2 using FillRectangle
             e.Graphics.FillRectangle(whiteBrush, player1);
+            e.Graphics.FillRectangle(whiteBrush, player2);
 
             // TODO draw ball using FillRectangle
+            e.Graphics.FillEllipse(blueBrush, ball);
 
         }
 
