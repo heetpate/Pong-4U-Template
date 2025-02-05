@@ -125,6 +125,11 @@ namespace Pong
 
         }
 
+        private void startLabel_Click(object sender, EventArgs e)
+        {
+
+        }
+
         /// <summary>
         /// sets the ball and paddle positions for game start
         /// </summary>
@@ -144,7 +149,6 @@ namespace Pong
 
             // TODO create a ball rectangle in the middle of screen
             ball = new Rectangle(this.Width / 2 - BALL_WIDTH /2, this.Height / 2 - BALL_HEIGHT / 2, BALL_WIDTH, BALL_HEIGHT);
-
         }
 
         /// <summary>
@@ -156,13 +160,53 @@ namespace Pong
             #region update ball position
 
             // TODO create code to move ball either left or right based on ballMoveRight and using BALL_SPEED
-           /* if (BALL_WIDTH  0)
+            // TODO create code move ball either down or up based on ballMoveDown and using BALL_SPEED
+            if (ballMoveRight)
+            {
+                ball.X += BALL_SPEED;
+            }
+            if (!ballMoveRight)
+            {
+                ball.X -= BALL_SPEED;
+            }
+            if (ballMoveDown)
             {
                 ball.Y = ball.Y + BALL_SPEED;
+            }
+            if (!ballMoveDown)
+            {
+                ball.Y -= BALL_SPEED;
+            }
 
-            }*/
+            // if ball hits top line and the bottom line
 
-            // TODO create code move ball either down or up based on ballMoveDown and using BALL_SPEED
+            if (ball.Y < 0 || ball.Y > this.Height - BALL_HEIGHT)
+            {
+                ballMoveDown = !ballMoveDown;
+            }
+            if (ball.X > this.Width )
+            {
+                collisionSound.Play();
+                ball = new Rectangle(this.Width / 2 - BALL_WIDTH / 2, this.Height / 2 - BALL_HEIGHT / 2, BALL_WIDTH, BALL_HEIGHT);
+                player1 = new Rectangle(PADDLE_EDGE, this.Height / 2 - PADDLE_HEIGHT / 2, PADDLE_WIDTH, PADDLE_HEIGHT);
+                player2 = new Rectangle(this.Width - PADDLE_EDGE - PADDLE_WIDTH, this.Height / 2 - PADDLE_HEIGHT / 2, PADDLE_WIDTH, PADDLE_HEIGHT);
+
+                player1Score ++;
+                player1ScoreLabel.Text = $"{player1Score}";
+                Thread.Sleep(1000);
+            }
+            if (ball.X < 0)
+            { 
+                collisionSound.Play();
+                ball = new Rectangle(this.Width / 2 - BALL_WIDTH / 2, this.Height / 2 - BALL_HEIGHT / 2, BALL_WIDTH, BALL_HEIGHT);
+                player1 = new Rectangle(PADDLE_EDGE, this.Height / 2 - PADDLE_HEIGHT / 2, PADDLE_WIDTH, PADDLE_HEIGHT);
+                player2 = new Rectangle(this.Width - PADDLE_EDGE - PADDLE_WIDTH, this.Height / 2 - PADDLE_HEIGHT / 2, PADDLE_WIDTH, PADDLE_HEIGHT);
+
+                player2Score++;
+                player2ScoreLabel.Text = $"{player2Score}";
+              
+                Thread.Sleep(1000);
+            }
 
             #endregion
 
@@ -170,29 +214,30 @@ namespace Pong
 
             if (wKeyDown == true && player1.Y > 0)
             {
-                // TODO create code to move player 1 up
+                //  create code to move player 1 up
                 player1.Y = player1.Y - PADDLE_SPEED;
             }
 
-            // TODO create an if statement and code to move player 1 down 
+            //  create an if statement and code to move player 1 down 
             if (sKeyDown == true && player1.Y > 0)
             {
                 player1.Y = player1.Y + PADDLE_SPEED;
             }
 
-            // TODO create an if statement and code to move player 2 up
+            //  create an if statement and code to move player 2 up
             if (upKeyDown == true && player2.Y > 0)
             {
-                // TODO create code to move player 1 up
+                //  create code to move player 1 up
                 player2.Y = player2.Y - PADDLE_SPEED;
             }
 
-            // TODO create an if statement and code to move player 2 down
+            //  create an if statement and code to move player 2 down
             if (downKeyDown == true && player2.Y > 0)
             {
                 player2.Y = player2.Y + PADDLE_SPEED;
             }
 
+            // code so it doesn't get outside of the parameter
             if (player1.Y < 0)
             {
                 player1.Y = player1.Y + PADDLE_SPEED;
@@ -201,17 +246,14 @@ namespace Pong
             {
                 player2.Y = player2.Y + PADDLE_SPEED;
             }
-
-            if (player1.Y > 0 )
+            if (player1.Y > this.Height - PADDLE_HEIGHT)
             {
                 player1.Y = player1.Y - PADDLE_SPEED;
             }
-            if (player2.Y < 0)
+            if (player2.Y > this.Height - PADDLE_HEIGHT)
             {
                 player2.Y = player2.Y - PADDLE_SPEED;
             }
-
-
 
             #endregion
 
@@ -233,6 +275,7 @@ namespace Pong
             #region ball collision with paddles
 
             // TODO create if statment that checks if player1 collides with ball and if it does
+           // if ()
                  // --- play a "paddle hit" sound and
                  // --- use ballMoveRight boolean to change direction
 
@@ -286,11 +329,11 @@ namespace Pong
 
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
-            // TODO draw player2 using FillRectangle
+            //  draw player2 using FillRectangle
             e.Graphics.FillRectangle(whiteBrush, player1);
             e.Graphics.FillRectangle(whiteBrush, player2);
 
-            // TODO draw ball using FillRectangle
+            //  draw ball using FillRectangle
             e.Graphics.FillEllipse(blueBrush, ball);
 
         }
